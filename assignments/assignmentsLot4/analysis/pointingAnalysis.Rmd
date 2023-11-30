@@ -1,0 +1,113 @@
+---
+title: "PointingXP"
+author: "Céline Coutrix / Papa Assane Fall"
+date: "11/23/2023"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Loading libraries
+
+```{r loading ggplot2}
+library(ggplot2)
+```
+
+## Loading data
+
+```{r loading base csv data into a dataframe}
+meanMTdf <- read.csv("../data/20211117_1527_MeanMT.csv", header=T)
+rawdf <- read.csv("../data/20211117_1527_RawData.csv", header=T)
+rawdf
+meanMTdf
+```
+
+## Plotting the data together with the linear regression
+
+```{r Plotting the base raw data together with the linear regression}
+ggplot(meanMTdf, aes(ID, MT)) +
+  geom_point() +
+  geom_smooth(method='lm')
+```
+## Linear modelling
+
+```{r base linear modeling}
+model <- lm(MT~ID, data = meanMTdf)
+summary(model)
+```
+
+Weirdly, in contrast to what Fitts' law says, ID does not seem to have an impact on the movement time. 
+Also, the R2=0.218 reported by the [experimental software](http://ergo.human.cornell.edu/FittsLaw/FittsLaw.html) and the R2=0.008146 I find here, are different. 
+
+Let us do some more experiments!
+
+```{r loading first csv data into a dataframe}
+meanMTdf <- read.csv("../data/20231116_1455_MeanMT.csv", header=T)
+rawdf <- read.csv("../data/20231116_1454_RawData.csv", header=T)
+rawdf
+meanMTdf
+```
+
+```{r Plotting the first raw data together with the linear regression}
+ggplot(meanMTdf, aes(ID, MT)) +
+  geom_point() +
+  geom_smooth(method='lm')
+```
+
+```{r first linear modeling}
+model <- lm(MT~ID, data = meanMTdf)
+summary(model)
+```
+
+Got a whopping 29 pointing errors count (I'm such a noob.. o_o'), with the same config. as author... software reported R2=0.022, found R2=0.02588 and wait up! Author compared adjusted RSquare with a multiple one! Quite the little trap X'D, but still, it all remains a bit different. We considered the multiple one and will keep on doing so.
+
+First off, we quite tried to retrieve the code used behind [experimental software](http://ergo.human.cornell.edu/FittsLaw/FittsLaw.html) to compute RSquare, as we're sure it is different from R's LM.
+We imagine the fundamental differences are mainly focused on the person performing the task, the tool used, the environment they're in and the conditions of the experiment (i.e. width, number of trials, competition on speed or precision, ...).
+
+  Visibility (screen under direct sunlight in a bright day, colorblindness), training/rehearsal, and so many other minute microscopic reasons/causes to drastically different results!
+  
+The following's the same experience, but with a phone (smaller but tactile screen).
+
+```{r loading second csv data into a dataframe}
+meanMTdf <- read.csv("../data/20231116_1557_MeanMT.csv", header=T)
+rawdf <- read.csv("../data/20231116_1557_RawData.csv", header=T)
+rawdf
+meanMTdf
+```
+
+```{r Plotting the second raw data together with the linear regression}
+ggplot(meanMTdf, aes(ID, MT)) +
+  geom_point() +
+  geom_smooth(method='lm')
+```
+
+```{r second linear modeling}
+model <- lm(MT~ID, data = meanMTdf)
+summary(model)
+```
+
+Got 11 pointing errors count (still a huge noob.. -_-'), without any change in the configuration... software reported R2=0.406 (ohw.. but is it good? X'D), found R2=0.02588.
+
+Now with a tablet (bigger (now similar than the first gadget) and tactile screen) :
+
+```{r loading third csv data into a dataframe}
+meanMTdf <- read.csv("../data/20231116_1705_MeanMT.csv", header=T)
+rawdf <- read.csv("../data/20231116_1705_RawData.csv", header=T)
+rawdf
+meanMTdf
+```
+
+```{r Plotting the third raw data together with the linear regression}
+ggplot(meanMTdf, aes(ID, MT)) +
+  geom_point() +
+  geom_smooth(method='lm')
+```
+
+```{r third linear modeling}
+model <- lm(MT~ID, data = meanMTdf)
+summary(model)
+```
+
+Got 1 pointing error count (yay?.. the error was quite on purpose ^^'.. okay, still a noob -_-), without any change in the configuration... software reported R2=0.912 (great model accuracy! (and MT = 363.070 + 38.703(A/W + 1))), found R2=0.9235 (ohw, now it is much closer to the adjusted one, with 0.9126... why..?).
